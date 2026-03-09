@@ -642,7 +642,7 @@ nav.scrolled { box-shadow: 0 4px 32px rgba(0,0,0,0.4); }
 #projects { border-top: 1px solid var(--border); }
 .proj-g {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 1.4rem;
 }
 .proj-card {
@@ -652,6 +652,7 @@ nav.scrolled { box-shadow: 0 4px 32px rgba(0,0,0,0.4); }
   display: flex; flex-direction: column;
   transition: border-color 0.28s, transform 0.28s, box-shadow 0.28s;
   position: relative;
+  height:100%;
 }
 .proj-card::before {
   content: '';
@@ -921,6 +922,17 @@ footer {
   .proj-g { grid-template-columns: 1fr; }
   .ach-g { grid-template-columns: 1fr; }
 }
+@media (max-width: 900px){
+  .proj-g{
+    grid-template-columns: repeat(2,1fr);
+  }
+}
+
+@media (max-width: 600px){
+  .proj-g{
+    grid-template-columns: 1fr;
+  }
+}
 </style>
 </head>
 <body>
@@ -982,7 +994,7 @@ footer {
         <a href="https://www.linkedin.com/in/riyakumarirk/" target="_blank" rel="noopener" class="btn-o" aria-label="LinkedIn">
           <i class="fab fa-linkedin"></i> LinkedIn
         </a>
-        <a href="/images/Riya Resume.pd" download class="btn-o" aria-label="Download Resume">
+        <a href="/media/Riya Resume.pdf" download class="btn-o" aria-label="Download Resume">
           <i class="fas fa-file-arrow-down"></i> Resume
         </a>
       </div>
@@ -1001,7 +1013,7 @@ footer {
       <div class="photo-wrap rv">
         <div class="photo-box">
           <div class="photo-glow"></div>
-          <img src="/images/Profile Picture.jpg" alt="Riya profile photo" class="profile-img">
+          <img src="/media/Profile Picture.jpg" alt="Riya profile photo" class="profile-img">
         </div>
        </div>
 
@@ -1232,6 +1244,45 @@ Apart from coding, I enjoy being involved in creative and organizing activities,
       <span class="tag">JavaScript</span>
       <span class="tag">Bootstrap</span>
       <span class="tag">Speech API</span>
+    </div>
+  </div>
+</article>
+
+<article class="proj-card rv d3" aria-label="Currency Converter">
+  <div class="proj-top">
+    <div class="proj-ic"><i class="fas fa-coins"></i></div>
+    <div class="proj-links">
+      <a href="https://github.com/riyakumari8/currency-converter" class="proj-lb" target="_blank">
+        <i class="fab fa-github"></i>
+      </a>
+      <a href="YOUR_VERCEL_LINK" class="proj-lb" target="_blank">
+        <i class="fas fa-external-link-alt"></i>
+      </a>
+    </div>
+  </div>
+
+  <div class="proj-body">
+    <div class="proj-prob">Problem · Real-Time Currency Conversion</div>
+
+    <h3 class="proj-title">Currency Converter Web App</h3>
+
+    <p class="proj-desc">
+      Developed a responsive currency converter that fetches real-time
+      exchange rates using a public API. The app allows users to convert
+      between multiple currencies with dynamic flag updates and an
+      interactive UI.
+    </p>
+
+    <div class="proj-impact">
+      💱 Provides real-time exchange rate conversion with modern UI and API integration.
+    </div>
+
+    <div class="proj-stack">
+      <span class="tag">HTML</span>
+      <span class="tag">CSS</span>
+      <span class="tag">JavaScript</span>
+      <span class="tag">API</span>
+      <span class="tag">Vercel</span>
     </div>
   </div>
 </article>
