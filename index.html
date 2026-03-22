@@ -636,6 +636,77 @@ nav.scrolled { box-shadow: 0 4px 32px rgba(0,0,0,0.4); }
 .sk-card:hover .tag { border-color: rgba(99,102,241,0.2); }
 [data-theme="light"] .tag { background: var(--surface); }
 
+.skill-filters {
+  display: flex;
+  justify-content: center;
+  gap: 0.8rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+.filter-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--muted2);
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+.filter-btn:hover, .filter-btn.active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--glow2);
+}
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 1.2rem;
+}
+.skill-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  aspect-ratio: 1;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.skill-item::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: radial-gradient(ellipse at 50% 0%, var(--glow2) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.skill-item:hover {
+  transform: translateY(-8px) scale(1.05);
+  border-color: var(--border-h);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+}
+.skill-item:hover::before { opacity: 1; }
+.skill-item i {
+  font-size: 2rem;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+  transition: color 0.3s;
+}
+.skill-item:hover i { color: var(--accent2); }
+.skill-item span {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-strong);
+  line-height: 1.2;
+}
+
 /* ════════════════════════════════════════════════
    PROJECTS
 ════════════════════════════════════════════════ */
@@ -688,7 +759,7 @@ nav.scrolled { box-shadow: 0 4px 32px rgba(0,0,0,0.4); }
   letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.4rem;
 }
 .proj-title { font-size: 1.03rem; font-weight: 700; color: var(--text-strong); margin-bottom: 0.7rem; line-height: 1.35; }
-.proj-desc { font-size: 0.87rem; color: var(--muted2); line-height: 1.78; margin-bottom: 1rem; flex: 1; }
+.proj-desc { display: none; }
 .proj-impact {
   background: rgba(99,102,241,0.06);
   border-left: 2px solid var(--accent);
@@ -698,15 +769,66 @@ nav.scrolled { box-shadow: 0 4px 32px rgba(0,0,0,0.4); }
 }
 .proj-stack { display: flex; flex-wrap: wrap; gap: 0.4rem; }
 
+/* Expanded detail behavior */
+.proj-card.expanded {
+  transform: translateY(-8px);
+  border-color: var(--accent);
+  box-shadow: 0 20px 70px rgba(0,0,0,0.45);
+}
+.proj-card.expanded .proj-desc,
+.proj-card.expanded .proj-impact,
+.proj-card.expanded .proj-stack {
+  opacity: 1;
+  max-height: 1200px;
+}
+
+.proj-card .proj-desc,
+.proj-card .proj-impact,
+.proj-card .proj-stack {
+  transition: all 0.3s ease;
+}
+
+#projectOverlay {
+  position: fixed; inset: 0; z-index: 1200;
+  display: none; align-items: center; justify-content: center;
+  background: rgba(0,0,0,0.6);
+}
+#projectOverlay.active { display: flex; }
+#projectOverlay .overlay-card {
+  width: min(92vw, 760px); max-height: 90vh;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 16px; overflow: auto; padding: 1.25rem;
+  box-shadow: 0 20px 62px rgba(0,0,0,0.5);
+}
+#projectOverlay .overlay-header {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  gap: 0.8rem; margin-bottom: 0.8rem;
+}
+#projectOverlay .overlay-header h3 {
+  margin: 0; font-size: 1.45rem; color: var(--text-strong);
+}
+#projectOverlay .overlay-close {
+  border: 1px solid var(--border);
+  background: transparent; color: var(--muted2);
+  border-radius: 8px; padding: 0.35rem 0.8rem;
+  cursor: pointer; font-weight: 700;
+}
+#projectOverlay .overlay-close:hover { border-color: var(--accent); color: var(--accent); }
+#projectOverlay .overlay-links a {
+  margin-right: 0.45rem; color: var(--accent); font-weight: 600;
+}
+
 /* ════════════════════════════════════════════════
    EXPERIENCE & EDUCATION
 ════════════════════════════════════════════════ */
-#experience {
+#experience,
+#education {
   background: var(--surface);
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
+  padding: 3rem 0;
 }
-.exp-g { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; }
+.exp-g { display: grid; grid-template-columns: 1fr; gap: 2.2rem; }
 .col-hd {
   font-size: 0.7rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
   color: var(--muted); margin-bottom: 1.8rem; padding-bottom: 0.8rem; border-bottom: 1px solid var(--border);
@@ -722,9 +844,81 @@ nav.scrolled { box-shadow: 0 4px 32px rgba(0,0,0,0.4); }
   box-shadow: 0 0 0 3px rgba(99,102,241,0.2);
 }
 .tl-date { font-family: var(--font-m); font-size: 0.66rem; color: var(--muted); letter-spacing: 0.08em; margin-bottom: 0.35rem; }
-.tl-role { font-size: 0.96rem; font-weight: 700; color: var(--text-strong); margin-bottom: 0.2rem; }
+.tl-role { font-size: 0.96rem; font-weight: 700; color: var(--text-strong); margin-bottom: 0.2rem; text-decoration: none; }
+.tl-role:hover { text-decoration: underline; }
 .tl-org { font-size: 0.82rem; color: var(--accent); margin-bottom: 0.6rem; font-weight: 500; }
 .tl-desc { font-size: 0.86rem; color: var(--muted2); line-height: 1.78; }
+
+/* Education Cards */
+.edu-g { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+.edu-card {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 2rem;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.edu-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(to bottom, var(--accent), var(--accent2));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.edu-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.15);
+  border-color: var(--border-h);
+}
+.edu-card:hover::before { opacity: 1; }
+.edu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.8rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.edu-degree {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-strong);
+  line-height: 1.3;
+}
+.edu-date {
+  font-family: var(--font-m);
+  font-size: 0.75rem;
+  color: var(--accent);
+  background: rgba(99,102,241,0.1);
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.edu-institution {
+  font-size: 0.9rem;
+  color: var(--accent2);
+  font-weight: 600;
+  margin-bottom: 0.6rem;
+}
+.edu-desc {
+  font-size: 0.88rem;
+  color: var(--muted2);
+  line-height: 1.7;
+  margin: 0;
+}
+.edu-cgpa {
+  font-size: 0.88rem;
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+}
 
 /* ════════════════════════════════════════════════
    ACHIEVEMENTS
@@ -760,6 +954,19 @@ nav.scrolled { box-shadow: 0 4px 32px rgba(0,0,0,0.4); }
 .ach-card:hover .ach-ic { background: rgba(99,102,241,0.2); }
 .ach-title { font-size: 0.93rem; font-weight: 700; color: var(--text-strong); margin-bottom: 0.3rem; }
 .ach-desc { font-size: 0.81rem; color: var(--muted2); line-height: 1.66; }
+.ach-action { margin-top: 0.8rem; }
+.ach-link {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  background: rgba(99,102,241,0.12);
+  color: var(--accent);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.78rem;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+.ach-link:hover { background: rgba(99,102,241,0.2); border-color: var(--accent); color: #fff; }
 
 /* ════════════════════════════════════════════════
    CONTACT
@@ -939,12 +1146,13 @@ footer {
 
 <!-- ════════════ NAVIGATION ════════════ -->
 <nav role="navigation" aria-label="Main navigation" id="mainNav">
-  <div class="nav-logo"><em>//</em>&nbsp;RiyaKumari.dev</div>
+  <div class="nav-logo"><em>//</em>&nbsp;RiyaKumari</div>
   <ul class="nav-links" id="navLinks" role="list">
     <li><a href="#about">About</a></li>
     <li><a href="#skills">Skills</a></li>
     <li><a href="#projects">Projects</a></li>
     <li><a href="#experience">Experience</a></li>
+    <li><a href="#education">Education</a></li>
     <li><a href="#achievements">Certifications</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
@@ -1013,7 +1221,7 @@ footer {
       <div class="photo-wrap rv">
         <div class="photo-box">
           <div class="photo-glow"></div>
-          <img src="/media/Profile Picture.jpg" alt="Riya profile photo" class="profile-img">
+          <img src="media/Profile Picture.jpg" alt="Riya profile photo" class="profile-img">
         </div>
        </div>
 
@@ -1040,57 +1248,32 @@ Apart from coding, I enjoy being involved in creative and organizing activities,
     <p class="slabel rv">Technical Arsenal</p>
     <h2 class="stitle rv d1"> Skills I’m building<br/><em>and improving every day.</em></h2>    
     <p class="ssub rv d2"><p class="ssub rv d2">Currently focusing on full-stack web development while continuing to strengthen my problem-solving skills through C++ and data structures.</p>
-    <div class="skills-modern rv">
-
-  <div class="skill-block">
-    <h3>Languages</h3>
-    <div class="skill-tags">
-      <span>C++</span>
-      <span>Python</span>
-      <span>Java</span>
-      <span>C</span>
-      <span>HTML</span>
-      <span>CSS</span>
-      <span>JavaScript</span>
-      <span>SQL</span>
+    <div class="skill-filters rv d1">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="languages">Languages</button>
+      <button class="filter-btn" data-filter="tools">Tools & Platforms</button>
+      <button class="filter-btn" data-filter="soft">Soft Skills</button>
     </div>
-  </div>
+    <div class="skills-grid rv d2">
+      <!-- Languages -->
+      <div class="skill-item" data-category="languages"><i class="fas fa-code"></i><span>C++</span></div>
+      <div class="skill-item" data-category="languages"><i class="fab fa-python"></i><span>Python</span></div>
+      <div class="skill-item" data-category="languages"><i class="fab fa-java"></i><span>Java</span></div>
+       <div class="skill-item" data-category="languages"><i class="fab fa-html5"></i><span>HTML</span></div>
+      <div class="skill-item" data-category="languages"><i class="fab fa-css3-alt"></i><span>CSS</span></div>
+      <div class="skill-item" data-category="languages"><i class="fab fa-js-square"></i><span>JavaScript</span></div>
+      <div class="skill-item" data-category="languages"><i class="fas fa-database"></i><span>SQL</span></div>
+            <div class="skill-item" data-category="languages"><i class="fab fa-react"></i><span>React</span></div>
 
-  <div class="skill-block">
-    <h3>Tools & Platforms</h3>
-    <div class="skill-tags">
-      <span>Git</span>
-      <span>GitHub</span>
-      <span>VS Code</span>
-      <span>Jupyter Notebook</span>
-      <span>Power BI</span>
-      <span>Excel</span>
+                  <div class="skill-item" data-category="languages"><i class="fas fa-leaf"></i><span>SpringBoot</span></div>
+
+      <!-- Tools & Platforms -->
+      <div class="skill-item" data-category="tools"><i class="fab fa-git-alt"></i><span>Git</span></div>
+      <div class="skill-item" data-category="tools"><i class="fas fa-chart-line"></i><span>Power BI</span></div>
+      <div class="skill-item" data-category="tools"><i class="fas fa-file-excel"></i><span>Excel</span></div>
+      <!-- Soft Skills -->
+       
     </div>
-  </div>
-
-  <div class="skill-block">
-    <h3>Core CS</h3>
-    <div class="skill-tags">
-      <span>Data Structures</span>
-      <span>Algorithms</span>
-      <span>OOP</span>
-      <span>DBMS</span>
-      <span>Operating Systems</span>
-      <span>Computer Networks</span>
-    </div>
-  </div>
-
-  <div class="skill-block">
-    <h3>Soft Skills</h3>
-    <div class="skill-tags">
-      <span>Problem Solving</span>
-      <span>Collaboration</span>
-      <span>Time Management</span>
-      <span>Adaptability</span>
-    </div>
-  </div>
-
-</div>
 
   </div>
 </section>
@@ -1113,6 +1296,7 @@ Apart from coding, I enjoy being involved in creative and organizing activities,
     </div>
   </div>
 
+
   <div class="proj-body">
     <div class="proj-prob">Problem · Health Pattern Prediction</div>
     <h3 class="proj-title">Menstrual Cycle Prediction System</h3>
@@ -1125,7 +1309,7 @@ Apart from coding, I enjoy being involved in creative and organizing activities,
     </p>
 
     <div class="proj-impact">
-      📊 Focused on applying data analysis and prediction models to
+       Focused on applying data analysis and prediction models to
       real-world health data.
     </div>
 
@@ -1160,7 +1344,7 @@ Apart from coding, I enjoy being involved in creative and organizing activities,
     </p>
 
     <div class="proj-impact">
-      📊 Used data analysis techniques to identify trends and improve
+       Used data analysis techniques to identify trends and improve
       understanding of hospital resource usage.
     </div>
 
@@ -1195,7 +1379,7 @@ Apart from coding, I enjoy being involved in creative and organizing activities,
     </p>
 
     <div class="proj-impact">
-      📊 Created data visualizations to better understand employment
+       Created data visualizations to better understand employment
       patterns and government scheme data.
     </div>
 
@@ -1234,7 +1418,7 @@ Apart from coding, I enjoy being involved in creative and organizing activities,
     </p>
 
     <div class="proj-impact">
-      📈 Features dark/light mode, voice input using Speech Recognition API,
+       Features dark/light mode, voice input using Speech Recognition API,
       animated UI, and real-time chat interaction.
     </div>
 
@@ -1274,7 +1458,7 @@ Apart from coding, I enjoy being involved in creative and organizing activities,
     </p>
 
     <div class="proj-impact">
-      💱 Provides real-time exchange rate conversion with modern UI and API integration.
+       Provides real-time exchange rate conversion with modern UI and API integration.
     </div>
 
     <div class="proj-stack">
@@ -1292,45 +1476,77 @@ Apart from coding, I enjoy being involved in creative and organizing activities,
   </div>
 </section>
 
-<!-- ════════════ EXPERIENCE & EDUCATION ════════════ -->
-<section id="experience" aria-label="Experience and Education">
+<!-- Project detail popup -->
+<div id="projectOverlay" aria-hidden="true" role="dialog" aria-label="Project details popup">
+  <div class="overlay-card">
+    <div class="overlay-header">
+      <h3 id="overlayTitle">Project Title</h3>
+      <button class="overlay-close" aria-label="Close project details">Close</button>
+    </div>
+    <div id="overlayType" style="font-size:0.85rem; margin-bottom:0.6rem; color: var(--accent);"></div>
+    <p id="overlayDesc" style="color: var(--muted2); line-height: 1.7; margin-bottom: 0.85rem;"></p>
+    <p id="overlayImpact" style="font-style: italic; background: rgba(99,102,241,0.08); padding: 0.65rem 0.9rem; border-left: 2px solid var(--accent); border-radius: 0.25rem; color: var(--muted2);"></p>
+    <div id="overlayStack" style="display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:0.8rem;"></div>
+    <div class="overlay-links" style="margin-top:1rem;"></div>
+  </div>
+</div>
+
+<!-- ════════════ EXPERIENCE ════════════ -->
+<section id="experience" aria-label="Experience">
   <div class="wrap">
-    <p class="slabel rv">Background</p>
-    <h2 class="stitle rv d1">Experience &amp;<br/><em>Education.</em></h2>
-    <p class="ssub rv d2">Structured learning, industry exposure, and hands-on leadership — building technical depth alongside professional maturity.</p>
+    <p class="slabel rv">Professional Experience</p>
+    <h2 class="stitle rv d1">Experience<br/><em>Hands-on training.</em></h2>
+    <p class="ssub rv d2">Industry exposure and practical skills to build technical depth and readiness for engineering roles.</p>
 
     <div class="exp-g rv d2">
       <div>
         <div class="col-hd">Work &amp; Training</div>
         <div class="tl">
-        
           <div class="tl-it">
             <div class="tl-date">July - 2025</div>
-            <div class="tl-role">Data Structures & Algorithms Training</div>
+            <a class="tl-role" href="https://drive.google.com/file/d/13iftZPv8Sm26y-avZIQy6f6Jwe1rgo8l/view?usp=drive_link" target="_blank" rel="noopener">Data Structures & Algorithms Training</a>
             <div class="tl-org">CipherSchools</div>
-            <div class="tl-desc">Completed structured training in core data structures including arrays, linked lists,stacks, queues, trees, graphs, and searching/sorting algorithms. Strengthenedproblem-solving skills through hands-on coding exercises and C++ implementations.</div>
+            <div class="tl-desc">Completed structured training in core data structures including arrays, linked lists, stacks, queues, trees, graphs, and searching/sorting algorithms. Strengthened problem-solving skills through hands-on coding exercises and C++ implementations.</div>
           </div>
         </div>
       </div>
-      <div>
-        <div class="col-hd">Education</div>
-        <div class="tl">
-          <div class="tl-it">
-            <div class="tl-date">2023 — 2027 (Expected)</div>
-            <div class="tl-role">B.Tech — Computer Science &amp; Engineering</div>
-            <div class="tl-org">Lovely Professional University, Phagwara, Punjab</div>
-          </div>
-          <div class="tl-it">
-            <div class="tl-date">2023</div>
-            <div class="tl-role">Senior Secondary- PCM</div>
-            <div class="tl-org">M.S. Vidya Mandir, Siwan, Bihar</div>
-          </div>
-          <div class="tl-it">
-            <div class="tl-date">2021</div>
-            <div class="tl-role">Secondary</div>
-            <div class="tl-org">M.S. Vidya Mandir, Siwan, Bihar</div>
-          </div>
+    </div>
+  </div>
+</section>
+
+<section id="education" aria-label="Education">
+  <div class="wrap">
+    <p class="slabel rv">Academic Journey</p>
+    <h2 class="stitle rv d1">Education<br/><em>Learning milestones.</em></h2>
+    <p class="ssub rv d2">Courses and certifications that keep the foundation strong and prepared for career growth.</p>
+
+    <div class="edu-g rv d2">
+      <div class="edu-card">
+        <div class="edu-header">
+          <div class="edu-degree">B.Tech — Computer Science & Engineering</div>
+          <div class="edu-date">2023 — 2027 (Expected)</div>
         </div>
+        <div class="edu-institution">Lovely Professional University, Phagwara, Punjab</div>
+        <div class="edu-cgpa">Current CGPA: <strong>8.09</strong></div>
+        <div class="edu-desc">Currently pursuing Bachelor's degree in Computer Science & Engineering, focusing on software development, algorithms, and modern technologies.</div>
+      </div>
+
+      <div class="edu-card">
+        <div class="edu-header">
+          <div class="edu-degree">Senior Secondary - PCM</div>
+          <div class="edu-date">2023</div>
+        </div>
+        <div class="edu-institution">M.S. Vidya Mandir, Siwan, Bihar</div>
+        <div class="edu-desc">Completed senior secondary education with Physics, Chemistry, and Mathematics as core subjects, building a strong foundation in science and mathematics.</div>
+      </div>
+
+      <div class="edu-card">
+        <div class="edu-header">
+          <div class="edu-degree">Secondary</div>
+          <div class="edu-date">2021</div>
+        </div>
+        <div class="edu-institution">M.S. Vidya Mandir, Siwan, Bihar</div>
+        <div class="edu-desc">Completed secondary education with a focus on fundamental subjects, developing essential skills and knowledge for higher education.</div>
       </div>
     </div>
   </div>
@@ -1340,7 +1556,7 @@ Apart from coding, I enjoy being involved in creative and organizing activities,
 <section id="achievements" aria-label="Achievements and Certifications">
   <div class="wrap">
     <p class="slabel rv">Recognition</p>
-    <h2 class="stitle rv d1">Certificates &amp;<br/><em>Certifacations</em></h2>
+    <h2 class="stitle rv d1">Certificates &amp;<br/><em>Certifications</em></h2>
 
     <div class="ach-g">
 
@@ -1352,6 +1568,9 @@ Apart from coding, I enjoy being involved in creative and organizing activities,
         Oracle University certification focused on Generative AI concepts,
         large language models, prompt engineering, and AI-powered applications.
         <br><small>Oracle University · Sep 2025</small>
+      </div>
+      <div class="ach-action">
+        <a class="ach-link" href="https://drive.google.com/file/d/1_NEH1uQcXdYkswLBFWvL7sGEqTijF_ce/view?usp=drive_link" target="_blank" rel="noopener">View Certificate</a>
       </div>
     </div>
   </div>
@@ -1365,6 +1584,9 @@ Apart from coding, I enjoy being involved in creative and organizing activities,
         fundamentals, modern AI tools, and real-world applications.
         <br><small>Infosys · Sep 2025</small>
       </div>
+      <div class="ach-action">
+        <a class="ach-link" href="https://drive.google.com/file/d/1awiRD029kLOdq1kdxz4ZcybuE5nc-Pur/view?usp=drive_link" target="_blank" rel="noopener">View Certificate</a>
+      </div>
     </div>
   </div>
 
@@ -1377,6 +1599,9 @@ Apart from coding, I enjoy being involved in creative and organizing activities,
         data protection, and privacy challenges in social media platforms.
         <br><small>NPTEL · May 2025</small>
       </div>
+      <div class="ach-action">
+        <a class="ach-link" href="https://drive.google.com/file/d/1yGPosyvYkv4uPeU6IcG8cj0Q2vg9Tkp9/view?usp=drive_link" target="_blank" rel="noopener">View Certificate</a>
+      </div>
     </div>
   </div>
 <div class="ach-card rv">
@@ -1387,6 +1612,9 @@ Apart from coding, I enjoy being involved in creative and organizing activities,
       Completed a 72-hour Java programming course covering core Java,
       object-oriented programming concepts, and application development.
       <br><small>Lovely Professional University · 2025</small>
+    </div>
+    <div class="ach-action">
+      <a class="ach-link" href="https://drive.google.com/file/d/1txanKS974PySjJHO6vBb11kzGGdm9WQe/view?usp=drive_link" target="_blank" rel="noopener">View Certificate</a>
     </div>
   </div>
 </div>
@@ -1400,6 +1628,9 @@ Apart from coding, I enjoy being involved in creative and organizing activities,
       operating systems concepts, and system architecture.
       <br><small>IBM · Coursera · Nov 2024</small>
     </div>
+    <div class="ach-action">
+      <a class="ach-link" href="https://drive.google.com/file/d/16yLU8qSTV2SuVA8ZKdrKB14V9JBL5eq8/view?usp=drive_link" target="_blank" rel="noopener">View Certificate</a>
+    </div>
   </div>
 </div>
   <div class="ach-card rv">
@@ -1411,6 +1642,9 @@ Apart from coding, I enjoy being involved in creative and organizing activities,
       CSS, Flexbox, Grid, accessibility, and responsive design
       principles for modern web development.
       <br><small>freeCodeCamp · Oct 2023</small>
+    </div>
+    <div class="ach-action">
+      <a class="ach-link" href="https://drive.google.com" target="_blank" rel="noopener">View Certificate</a>
     </div>
   </div>
 </div>
@@ -1555,6 +1789,90 @@ document.getElementById('contactForm').addEventListener('submit', function(e) {
   st.style.display = 'block';
   st.textContent = '✓ Opening your mail client…';
   setTimeout(() => { st.style.display = 'none'; }, 5000);
+});
+
+/* ── PROJECT CARD POPUP ────────────── */
+const overlay = document.getElementById('projectOverlay');
+const closeBtn = overlay.querySelector('.overlay-close');
+const overlayTitle = document.getElementById('overlayTitle');
+const overlayType = document.getElementById('overlayType');
+const overlayDesc = document.getElementById('overlayDesc');
+const overlayImpact = document.getElementById('overlayImpact');
+const overlayStack = document.getElementById('overlayStack');
+const overlayLinks = document.querySelector('#projectOverlay .overlay-links');
+
+function closeProjectOverlay() {
+  overlay.classList.remove('active');
+  overlay.setAttribute('aria-hidden', 'true');
+}
+
+function openProjectOverlay(card) {
+  const title = card.querySelector('.proj-title').textContent.trim();
+  const type = card.querySelector('.proj-prob').textContent.trim();
+  const description = card.querySelector('.proj-desc').textContent.trim();
+  const impact = card.querySelector('.proj-impact').textContent.trim();
+  const stackTags = Array.from(card.querySelectorAll('.proj-stack .tag')).map(t => t.textContent.trim());
+  const links = Array.from(card.querySelectorAll('.proj-links a'));
+
+  overlayTitle.textContent = title;
+  overlayType.textContent = type;
+  overlayDesc.textContent = description;
+  overlayImpact.textContent = impact;
+
+  overlayStack.innerHTML = stackTags.map(tag => `<span class='tag'>${tag}</span>`).join('');
+  overlayLinks.innerHTML = links.map(a => {
+    const icon = a.querySelector('i') ? a.querySelector('i').className : 'fas fa-link';
+    const href = a.href;
+    const label = a.title || (icon.includes('github') ? 'GitHub' : 'Live');
+    return `<a href='${href}' target='_blank' rel='noopener'>${label}</a>`;
+  }).join('');
+
+  overlay.classList.add('active');
+  overlay.setAttribute('aria-hidden', 'false');
+}
+
+document.querySelectorAll('.proj-card').forEach(card => {
+  card.addEventListener('click', event => {
+    if (event.target.closest('.proj-links')) return; // keep link clicks normal
+
+    document.querySelectorAll('.proj-card').forEach(c => c.classList.remove('expanded'));
+    card.classList.add('expanded');
+    openProjectOverlay(card);
+  });
+});
+
+closeBtn.addEventListener('click', closeProjectOverlay);
+overlay.addEventListener('click', e => {
+  if (e.target === overlay) closeProjectOverlay();
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && overlay.classList.contains('active')) {
+    closeProjectOverlay();
+  }
+});
+
+/* ── SKILL FILTER ─────────────────── */
+const filterBtns = document.querySelectorAll('.filter-btn');
+const skillItems = document.querySelectorAll('.skill-item');
+
+filterBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    // Remove active class from all buttons
+    filterBtns.forEach(b => b.classList.remove('active'));
+    // Add active to clicked
+    btn.classList.add('active');
+    
+    const filter = btn.dataset.filter;
+    
+    skillItems.forEach(item => {
+      if (filter === 'all' || item.dataset.category === filter) {
+        item.style.display = 'flex';
+      } else {
+        item.style.display = 'none';
+      }
+    });
+  });
 });
 
 /* ── HERO CANVAS — Particle Field ─── */
