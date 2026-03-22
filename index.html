@@ -214,6 +214,29 @@ nav.scrolled { box-shadow: 0 4px 32px rgba(0,0,0,0.4); }
 .nav-links a:hover, .nav-links a.active { color: var(--accent); }
 .nav-links a:hover::after, .nav-links a.active::after { transform: scaleX(1); }
 
+/* Download CV Button in Nav */
+.nav-resume-btn {
+  background: var(--accent) !important; 
+  color: #fff !important; 
+  padding: 0.6rem 1rem !important; 
+  border-radius: 6px !important; 
+  font-size: 0.75rem !important; 
+  font-weight: 700 !important; 
+  display: inline-flex !important; 
+  align-items: center !important; 
+  gap: 0.4rem !important; 
+  text-transform: uppercase !important; 
+  letter-spacing: 0.1em !important;
+  transition: all 0.25s !important;
+}
+.nav-resume-btn::after { display: none !important; }
+.nav-resume-btn:hover { 
+  background: var(--accent2) !important; 
+  transform: translateY(-2px) !important; 
+  box-shadow: 0 4px 16px rgba(99,102,241,0.4) !important;
+}
+.nav-resume-btn i { font-size: 0.65rem; }
+
 .nav-r { display: flex; align-items: center; gap: 0.8rem; }
 
 #theme-toggle {
@@ -1085,6 +1108,81 @@ footer {
 .d5 { transition-delay: 0.45s; }
 
 /* ════════════════════════════════════════════════
+   RESUME MODAL
+════════════════════════════════════════════════ */
+#resumeOverlay {
+  position: fixed; inset: 0; z-index: 1200;
+  display: none; align-items: center; justify-content: center;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(4px);
+}
+#resumeOverlay.active { display: flex; }
+#resumeOverlay .resume-card {
+  width: min(95vw, 900px); max-height: 90vh;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 16px; overflow: auto; padding: 2rem;
+  box-shadow: 0 20px 62px rgba(0,0,0,0.5);
+  animation: slideUp 0.3s ease-out;
+}
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+#resumeOverlay .resume-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 1.5rem; gap: 1rem; border-bottom: 1px solid var(--border);
+  padding-bottom: 1rem;
+}
+#resumeOverlay .resume-header h2 {
+  margin: 0; font-size: 1.8rem; color: var(--text-strong);
+}
+#resumeOverlay .resume-close {
+  border: 1px solid var(--border);
+  background: transparent; color: var(--muted2);
+  border-radius: 8px; padding: 0.5rem 1rem;
+  cursor: pointer; font-weight: 700; font-size: 0.85rem;
+  transition: all 0.22s;
+}
+#resumeOverlay .resume-close:hover {
+  border-color: var(--accent); color: var(--accent);
+}
+#resumeOverlay .resume-body {
+  color: var(--muted2); line-height: 1.8;
+}
+.resume-section {
+  margin-bottom: 2rem;
+}
+.resume-section:last-child { margin-bottom: 0; }
+.resume-section-title {
+  font-size: 1.1rem; font-weight: 700; color: var(--text-strong);
+  margin-bottom: 1rem; padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--accent);
+}
+.resume-item {
+  margin-bottom: 1.2rem;
+}
+.resume-item:last-child { margin-bottom: 0; }
+.resume-item-title {
+  font-weight: 700; color: var(--text-strong); font-size: 0.95rem;
+}
+.resume-item-subtitle {
+  color: var(--accent); font-size: 0.85rem; font-weight: 600;
+}
+.resume-item-meta {
+  color: var(--muted); font-size: 0.8rem; margin-top: 0.2rem;
+}
+.resume-item-desc {
+  color: var(--muted2); font-size: 0.9rem; margin-top: 0.4rem;
+}
+.resume-actions {
+  display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 2rem;
+  padding-top: 1.5rem; border-top: 1px solid var(--border);
+}
+.resume-actions a, .resume-actions button {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+}
+
+/* ════════════════════════════════════════════════
    FLOATING SOCIAL DOCK
 ════════════════════════════════════════════════ */
 .social-dock {
@@ -1187,7 +1285,7 @@ footer {
 
 <!-- ════════════ NAVIGATION ════════════ -->
 <nav role="navigation" aria-label="Main navigation" id="mainNav">
-  <div class="nav-logo"><em>//</em>&nbsp;RiyaKumari</div>
+  <div class="nav-logo">&nbsp;RiyaKumari</div>
   <ul class="nav-links" id="navLinks" role="list">
     <li><a href="#about">About</a></li>
     <li><a href="#skills">Skills</a></li>
@@ -1196,6 +1294,7 @@ footer {
     <li><a href="#education">Education</a></li>
     <li><a href="#achievements">Certifications</a></li>
     <li><a href="#contact">Contact</a></li>
+    <li><a href="/media/Riya Resume.pdf" download class="nav-resume-btn"><i class="fas fa-download"></i> Download CV</a></li>
   </ul>
   <div class="nav-r">
     <button id="theme-toggle" aria-label="Toggle colour theme">
@@ -1243,9 +1342,9 @@ footer {
         <a href="https://www.linkedin.com/in/riyakumarirk/" target="_blank" rel="noopener" class="btn-o" aria-label="LinkedIn">
           <i class="fab fa-linkedin"></i> LinkedIn
         </a>
-        <a href="/media/Riya Resume.pdf" download class="btn-o" aria-label="Download Resume">
-          <i class="fas fa-file-arrow-down"></i> Resume
-        </a>
+        <button id="viewResumeBtn" class="btn-o" aria-label="View Resume">
+          <i class="fas fa-file-pdf"></i> View Resume
+        </button>
       </div>
     </div>
 
@@ -1313,6 +1412,11 @@ Apart from coding, I enjoy being involved in creative and organizing activities,
       <div class="skill-item" data-category="tools"><i class="fas fa-chart-line"></i><span>Power BI</span></div>
       <div class="skill-item" data-category="tools"><i class="fas fa-file-excel"></i><span>Excel</span></div>
       <!-- Soft Skills -->
+       <div class="skill-item" data-category="soft"><i class="fab fa-git-alt"></i><span>Problem Solving</span></div>
+      <div class="skill-item" data-category="soft"><i class="fas fa-chart-line"></i><span>Adaptability</span></div>
+      <div class="skill-item" data-category="soft"><i class="fas fa-file-excel"></i><span>Teamwork</span></div>
+
+
        
     </div>
 
@@ -1629,7 +1733,9 @@ Apart from coding, I enjoy being involved in creative and organizing activities,
             <div class="tl-date">July - 2025</div>
             <a class="tl-role" href="https://drive.google.com/file/d/13iftZPv8Sm26y-avZIQy6f6Jwe1rgo8l/view?usp=drive_link" target="_blank" rel="noopener">Data Structures & Algorithms Training</a>
             <div class="tl-org">CipherSchools</div>
-            <div class="tl-desc">Completed structured training in core data structures including arrays, linked lists, stacks, queues, trees, graphs, and searching/sorting algorithms. Strengthened problem-solving skills through hands-on coding exercises and C++ implementations.</div>
+            <div class="tl-desc">Completed a comprehensive training program in C++ and Data Structures & Algorithms from CipherSchools.  
+Gained strong understanding of core concepts such as arrays, linked lists, stacks, queues, trees, and sorting algorithms.  
+Focused on improving problem-solving skills and writing efficient, optimized code.</div>
           </div>
         </div>
       </div>
@@ -1794,8 +1900,8 @@ Apart from coding, I enjoy being involved in creative and organizing activities,
       <div>
         <form class="cf rv d2" id="contactForm" aria-label="Contact form">
           <div class="cf-row">
-            <div class="cf-g"><label class="cf-lbl" for="f-name">Your Name</label><input class="cf-in" type="text" id="f-name" name="name" placeholder="Jane Smith" required autocomplete="name" /></div>
-            <div class="cf-g"><label class="cf-lbl" for="f-email">Email</label><input class="cf-in" type="email" id="f-email" name="email" placeholder="jane@company.com" required autocomplete="email" /></div>
+            <div class="cf-g"><label class="cf-lbl" for="f-name">Your Name</label><input class="cf-in" type="text" id="f-name" name="name" placeholder="Your Name " required autocomplete="name" /></div>
+            <div class="cf-g"><label class="cf-lbl" for="f-email">Email</label><input class="cf-in" type="email" id="f-email" name="email" placeholder="username@company.com" required autocomplete="email" /></div>
           </div>
           <div class="cf-g"><label class="cf-lbl" for="f-subject">Subject</label><input class="cf-in" type="text" id="f-subject" name="subject" placeholder="Opportunity at Acme Corp" required /></div>
           <div class="cf-g"><label class="cf-lbl" for="f-msg">Message</label><textarea class="cf-ta" id="f-msg" name="message" placeholder="Tell me about the role, team, and what you're building..." required></textarea></div>
@@ -1805,6 +1911,105 @@ Apart from coding, I enjoy being involved in creative and organizing activities,
     </div>
   </div>
 </section>
+
+<!-- ════════════ RESUME MODAL ════════════ -->
+<div id="resumeOverlay" aria-hidden="true" role="dialog" aria-label="Resume details">
+  <div class="resume-card">
+    <div class="resume-header">
+      <h2>My Resume</h2>
+      <button class="resume-close" aria-label="Close resume">Close</button>
+    </div>
+    <div class="resume-body">
+      <div class="resume-section">
+        <div class="resume-section-title"><i class="fas fa-user" style="color: var(--accent); margin-right: 0.5rem;"></i>Riya Kumari</div>
+        <p style="margin: 0; font-size: 0.95rem; color: var(--text-strong);">Computer Science Student | Problem Solver | Full-Stack Developer Enthusiast</p>
+        <p style="margin: 0.5rem 0 0 0; font-size: 0.85rem;">B.Tech CSE | Lovely Professional University | 200+ LeetCode Problems | C++, Python, Java, Web Dev</p>
+      </div>
+
+      <div class="resume-section">
+        <div class="resume-section-title"><i class="fas fa-graduation-cap" style="color: var(--accent); margin-right: 0.5rem;"></i>Education</div>
+        <div class="resume-item">
+          <div class="resume-item-title">B.Tech — Computer Science & Engineering</div>
+          <div class="resume-item-subtitle">Lovely Professional University, Phagwara, Punjab</div>
+          <div class="resume-item-meta">2023 — 2027 (Expected) | CGPA: 8.09</div>
+          <div class="resume-item-desc">Currently pursuing Bachelor's degree focusing on software development, algorithms, and modern technologies.</div>
+        </div>
+      </div>
+
+      <div class="resume-section">
+        <div class="resume-section-title"><i class="fas fa-briefcase" style="color: var(--accent); margin-right: 0.5rem;"></i>Experience & Training</div>
+        <div class="resume-item">
+          <div class="resume-item-title">Data Structures & Algorithms Training</div>
+          <div class="resume-item-subtitle">CipherSchools</div>
+          <div class="resume-item-meta">July 2025</div>
+          <div class="resume-item-desc">Completed structured training in core data structures including arrays, linked lists, stacks, queues, trees, graphs, and searching/sorting algorithms. Strengthened problem-solving skills through hands-on C++ implementations.</div>
+        </div>
+      </div>
+
+      <div class="resume-section">
+        <div class="resume-section-title"><i class="fas fa-code" style="color: var(--accent); margin-right: 0.5rem;"></i>Technical Skills</div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+          <div>
+            <div class="resume-item-subtitle">Languages</div>
+            <p style="margin: 0.4rem 0; font-size: 0.9rem;">C++, Python, Java, HTML, CSS, JavaScript, SQL</p>
+          </div>
+          <div>
+            <div class="resume-item-subtitle">Tools & Platforms</div>
+            <p style="margin: 0.4rem 0; font-size: 0.9rem;">Git, VS Code, Power BI, Excel, Azure, React, SpringBoot</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="resume-section">
+        <div class="resume-section-title"><i class="fas fa-trophy" style="color: var(--accent); margin-right: 0.5rem;"></i>Certifications</div>
+        <div class="resume-item">
+          <div class="resume-item-subtitle">🔹 OCI 2025 Certified Generative AI Professional — Oracle University (Sep 2025)</div>
+        </div>
+        <div class="resume-item">
+          <div class="resume-item-subtitle">🔹 Master Generative AI & AI Tools — Infosys (Sep 2025)</div>
+        </div>
+        <div class="resume-item">
+          <div class="resume-item-subtitle">🔹 Privacy & Security in Online Social Media — NPTEL (May 2025)</div>
+        </div>
+        <div class="resume-item">
+          <div class="resume-item-subtitle">🔹 Java Programming Certification — LPU (2025)</div>
+        </div>
+        <div class="resume-item">
+          <div class="resume-item-subtitle">🔹 Responsive Web Design — freeCodeCamp (Oct 2023)</div>
+        </div>
+      </div>
+
+      <div class="resume-section">
+        <div class="resume-section-title"><i class="fas fa-laptop-code" style="color: var(--accent); margin-right: 0.5rem;"></i>Key Projects</div>
+        <div class="resume-item">
+          <div class="resume-item-subtitle">Menstrual Cycle Prediction System</div>
+          <div class="resume-item-desc">Python-based system using machine learning to predict menstrual cycles and track health patterns. Implemented data analysis and prediction algorithms.</div>
+        </div>
+        <div class="resume-item">
+          <div class="resume-item-subtitle">Hospital Emergency Room Analysis</div>
+          <div class="resume-item-desc">Data analysis project examining hospital ER patterns, patient flow, and resource utilization using Python and visualization tools.</div>
+        </div>
+        <div class="resume-item">
+          <div class="resume-item-subtitle">MGNREGA Data Dashboard</div>
+          <div class="resume-item-desc">Interactive Power BI dashboard visualizing government employment data with regional analysis and insights.</div>
+        </div>
+        <div class="resume-item">
+          <div class="resume-item-subtitle">Yoga Wellness Chatbot</div>
+          <div class="resume-item-desc">Interactive chatbot with voice input, dark/light mode, and real-time chat for yoga guidance and wellness practices.</div>
+        </div>
+      </div>
+
+      <div class="resume-actions">
+        <a href="/media/Riya Resume.pdf" download class="btn-p">
+          <i class="fas fa-download"></i> Download PDF
+        </a>
+        <a href="mailto:riyakumarirk08@gmail.com" class="btn-o">
+          <i class="fas fa-envelope"></i> Email Me
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- ════════════ FOOTER ════════════ -->
 <footer role="contentinfo">
@@ -2007,6 +2212,34 @@ filterBtns.forEach(btn => {
       }
     });
   });
+});
+
+/* ── RESUME MODAL ──────────────────── */
+const resumeOverlay = document.getElementById('resumeOverlay');
+const viewResumeBtn = document.getElementById('viewResumeBtn');
+const resumeCloseBtn = document.querySelector('.resume-close');
+
+function closeResumeOverlay() {
+  resumeOverlay.classList.remove('active');
+  resumeOverlay.setAttribute('aria-hidden', 'true');
+}
+
+function openResumeOverlay() {
+  resumeOverlay.classList.add('active');
+  resumeOverlay.setAttribute('aria-hidden', 'false');
+}
+
+viewResumeBtn.addEventListener('click', openResumeOverlay);
+resumeCloseBtn.addEventListener('click', closeResumeOverlay);
+
+resumeOverlay.addEventListener('click', e => {
+  if (e.target === resumeOverlay) closeResumeOverlay();
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && resumeOverlay.classList.contains('active')) {
+    closeResumeOverlay();
+  }
 });
 
 /* ── HERO CANVAS — Particle Field ─── */
