@@ -723,7 +723,6 @@ nav.scrolled { box-shadow: 0 4px 32px rgba(0,0,0,0.4); }
   display: flex; flex-direction: column;
   transition: border-color 0.28s, transform 0.28s, box-shadow 0.28s;
   position: relative;
-  height:100%;
 }
 .proj-card::before {
   content: '';
@@ -737,7 +736,7 @@ nav.scrolled { box-shadow: 0 4px 32px rgba(0,0,0,0.4); }
   box-shadow: 0 24px 60px rgba(0,0,0,0.3), 0 0 0 1px var(--border-h);
 }
 .proj-card:hover::before { opacity: 1; }
-.proj-top { padding: 1.5rem 1.5rem 0; display: flex; align-items: flex-start; justify-content: space-between; }
+.proj-top { padding: 1.2rem 1.2rem 0; display: flex; align-items: flex-start; justify-content: space-between; }
 .proj-ic {
   width: 48px; height: 48px; border-radius: 11px;
   background: rgba(99,102,241,0.12);
@@ -753,12 +752,13 @@ nav.scrolled { box-shadow: 0 4px 32px rgba(0,0,0,0.4); }
   color: var(--muted2); font-size: 0.82rem; transition: all 0.22s; text-decoration: none;
 }
 .proj-lb:hover { border-color: var(--accent); color: var(--accent); background: var(--glow2); }
-.proj-body { padding: 1.2rem 1.5rem 1.6rem; flex: 1; display: flex; flex-direction: column; position: relative; z-index: 1; }
+.proj-body { padding: 0.8rem 1.2rem 1.2rem; flex: 1; display: flex; flex-direction: column; position: relative; z-index: 1; }
 .proj-prob {
   font-family: var(--font-m); font-size: 0.64rem; color: var(--accent);
   letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.4rem;
 }
-.proj-title { font-size: 1.03rem; font-weight: 700; color: var(--text-strong); margin-bottom: 0.7rem; line-height: 1.35; }
+.proj-title { font-size: 1.03rem; font-weight: 700; color: var(--text-strong); margin-bottom: 0.5rem; line-height: 1.35; }
+.proj-summary { font-size: 0.9rem; color: var(--muted2); line-height: 1.5; margin-bottom: 1rem; }
 .proj-desc { display: none; }
 .proj-impact {
   background: rgba(99,102,241,0.06);
@@ -769,6 +769,40 @@ nav.scrolled { box-shadow: 0 4px 32px rgba(0,0,0,0.4); }
 }
 .proj-stack { display: flex; flex-wrap: wrap; gap: 0.4rem; }
 
+/* Project Demo, Features, Screenshots */
+.proj-demo { margin: 1rem 0; }
+.proj-demo .btn-o { font-size: 0.85rem; padding: 0.5rem 1rem; }
+
+.proj-features { margin: 1.5rem 0; }
+.proj-features h4 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-strong);
+  margin-bottom: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.proj-features ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.proj-features li {
+  font-size: 0.85rem;
+  color: var(--muted2);
+  line-height: 1.6;
+  margin-bottom: 0.5rem;
+  padding-left: 1rem;
+  position: relative;
+}
+.proj-features li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+
 /* Expanded detail behavior */
 .proj-card.expanded {
   transform: translateY(-8px);
@@ -777,6 +811,8 @@ nav.scrolled { box-shadow: 0 4px 32px rgba(0,0,0,0.4); }
 }
 .proj-card.expanded .proj-desc,
 .proj-card.expanded .proj-impact,
+.proj-card.expanded .proj-demo,
+.proj-card.expanded .proj-features,
 .proj-card.expanded .proj-stack {
   opacity: 1;
   max-height: 1200px;
@@ -784,7 +820,12 @@ nav.scrolled { box-shadow: 0 4px 32px rgba(0,0,0,0.4); }
 
 .proj-card .proj-desc,
 .proj-card .proj-impact,
+.proj-card .proj-demo,
+.proj-card .proj-features,
 .proj-card .proj-stack {
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
   transition: all 0.3s ease;
 }
 
@@ -1301,6 +1342,8 @@ Apart from coding, I enjoy being involved in creative and organizing activities,
     <div class="proj-prob">Problem · Health Pattern Prediction</div>
     <h3 class="proj-title">Menstrual Cycle Prediction System</h3>
 
+    <p class="proj-summary">A Python application that predicts menstrual cycles using machine learning and data analysis techniques.</p>
+
     <p class="proj-desc">
       Developed a Python-based system to analyze historical cycle data
       and predict future menstrual cycles. The project explores how
@@ -1311,6 +1354,20 @@ Apart from coding, I enjoy being involved in creative and organizing activities,
     <div class="proj-impact">
        Focused on applying data analysis and prediction models to
       real-world health data.
+    </div>
+
+    <div class="proj-demo">
+      <a href="#" class="btn-o" target="_blank">View Demo</a>
+    </div>
+
+    <div class="proj-features">
+      <h4>Key Features</h4>
+      <ul>
+        <li>Data analysis and prediction algorithms</li>
+        <li>Historical cycle tracking</li>
+        <li>Machine learning model implementation</li>
+        <li>Health pattern visualization</li>
+      </ul>
     </div>
 
     <div class="proj-stack">
@@ -1337,6 +1394,8 @@ Apart from coding, I enjoy being involved in creative and organizing activities,
 
     <h3 class="proj-title">Hospital Emergency Room Analysis</h3>
 
+    <p class="proj-summary">Data analysis project examining hospital emergency room patterns, patient flow, and resource utilization.</p>
+
     <p class="proj-desc">
       Analyzed hospital emergency room data to understand patient flow,
       waiting times, and treatment patterns. The project focused on
@@ -1346,6 +1405,20 @@ Apart from coding, I enjoy being involved in creative and organizing activities,
     <div class="proj-impact">
        Used data analysis techniques to identify trends and improve
       understanding of hospital resource usage.
+    </div>
+
+    <div class="proj-demo">
+      <a href="#" class="btn-o" target="_blank">View Demo</a>
+    </div>
+
+    <div class="proj-features">
+      <h4>Key Features</h4>
+      <ul>
+        <li>Patient flow analysis</li>
+        <li>Waiting time calculations</li>
+        <li>Data visualization dashboards</li>
+        <li>Resource utilization insights</li>
+      </ul>
     </div>
 
     <div class="proj-stack">
@@ -1372,6 +1445,8 @@ Apart from coding, I enjoy being involved in creative and organizing activities,
 
     <h3 class="proj-title">MGNREGA Data Dashboard</h3>
 
+    <p class="proj-summary">Interactive dashboard visualizing MGNREGA employment data with regional analysis and government scheme insights.</p>
+
     <p class="proj-desc">
       Built an interactive dashboard to visualize MGNREGA employment
       data and analyze trends across different regions. The dashboard
@@ -1381,6 +1456,20 @@ Apart from coding, I enjoy being involved in creative and organizing activities,
     <div class="proj-impact">
        Created data visualizations to better understand employment
       patterns and government scheme data.
+    </div>
+
+    <div class="proj-demo">
+      <a href="#" class="btn-o" target="_blank">View Demo</a>
+    </div>
+
+    <div class="proj-features">
+      <h4>Key Features</h4>
+      <ul>
+        <li>Interactive data visualizations</li>
+        <li>Regional employment analysis</li>
+        <li>Government scheme tracking</li>
+        <li>Real-time data updates</li>
+      </ul>
     </div>
 
     <div class="proj-stack">
@@ -1410,6 +1499,8 @@ Apart from coding, I enjoy being involved in creative and organizing activities,
 
     <h3 class="proj-title">Yoga Wellness Chatbot</h3>
 
+    <p class="proj-summary">Interactive chatbot providing yoga guidance, breathing exercises, and wellness practices with voice input support.</p>
+
     <p class="proj-desc">
       Built an interactive yoga chatbot that helps users learn yoga poses,
       breathing exercises, meditation techniques, and wellness practices.
@@ -1420,6 +1511,21 @@ Apart from coding, I enjoy being involved in creative and organizing activities,
     <div class="proj-impact">
        Features dark/light mode, voice input using Speech Recognition API,
       animated UI, and real-time chat interaction.
+    </div>
+
+    <div class="proj-demo">
+      <a href="#" class="btn-o" target="_blank">View Demo</a>
+    </div>
+
+    <div class="proj-features">
+      <h4>Key Features</h4>
+      <ul>
+        <li>Interactive yoga pose guidance</li>
+        <li>Voice input with Speech Recognition</li>
+        <li>Dark/Light mode toggle</li>
+        <li>Real-time chat interface</li>
+        <li>Meditation and breathing exercises</li>
+      </ul>
     </div>
 
     <div class="proj-stack">
@@ -1450,6 +1556,8 @@ Apart from coding, I enjoy being involved in creative and organizing activities,
 
     <h3 class="proj-title">Currency Converter Web App</h3>
 
+    <p class="proj-summary">Responsive web application for real-time currency conversion with live exchange rates and dynamic flag updates.</p>
+
     <p class="proj-desc">
       Developed a responsive currency converter that fetches real-time
       exchange rates using a public API. The app allows users to convert
@@ -1459,6 +1567,21 @@ Apart from coding, I enjoy being involved in creative and organizing activities,
 
     <div class="proj-impact">
        Provides real-time exchange rate conversion with modern UI and API integration.
+    </div>
+
+    <div class="proj-demo">
+      <a href="#" class="btn-o" target="_blank">View Demo</a>
+    </div>
+
+    <div class="proj-features">
+      <h4>Key Features</h4>
+      <ul>
+        <li>Real-time exchange rate API integration</li>
+        <li>Dynamic flag updates</li>
+        <li>Responsive design</li>
+        <li>Multiple currency support</li>
+        <li>Modern UI with smooth animations</li>
+      </ul>
     </div>
 
     <div class="proj-stack">
@@ -1809,16 +1932,29 @@ function closeProjectOverlay() {
 function openProjectOverlay(card) {
   const title = card.querySelector('.proj-title').textContent.trim();
   const type = card.querySelector('.proj-prob').textContent.trim();
+  const summary = card.querySelector('.proj-summary').textContent.trim();
   const description = card.querySelector('.proj-desc').textContent.trim();
   const impact = card.querySelector('.proj-impact').textContent.trim();
+  const features = Array.from(card.querySelectorAll('.proj-features li')).map(li => li.textContent.trim());
   const stackTags = Array.from(card.querySelectorAll('.proj-stack .tag')).map(t => t.textContent.trim());
   const links = Array.from(card.querySelectorAll('.proj-links a'));
 
   overlayTitle.textContent = title;
   overlayType.textContent = type;
-  overlayDesc.textContent = description;
+  overlayDesc.textContent = summary + (description ? '\n\n' + description : '');
   overlayImpact.textContent = impact;
 
+  // Add features to overlay
+  const featuresHtml = features.length > 0 ? `
+    <div style="margin-top: 1rem;">
+      <h4 style="font-size: 0.95rem; font-weight: 700; color: var(--text-strong); margin-bottom: 0.5rem;">Key Features</h4>
+      <ul style="list-style: none; padding: 0; margin: 0;">
+        ${features.map(feature => `<li style="font-size: 0.85rem; color: var(--muted2); margin-bottom: 0.3rem; padding-left: 1rem; position: relative;">✓ ${feature}</li>`).join('')}
+      </ul>
+    </div>
+  ` : '';
+
+  overlayImpact.innerHTML = impact + featuresHtml;
   overlayStack.innerHTML = stackTags.map(tag => `<span class='tag'>${tag}</span>`).join('');
   overlayLinks.innerHTML = links.map(a => {
     const icon = a.querySelector('i') ? a.querySelector('i').className : 'fas fa-link';
@@ -1835,8 +1971,6 @@ document.querySelectorAll('.proj-card').forEach(card => {
   card.addEventListener('click', event => {
     if (event.target.closest('.proj-links')) return; // keep link clicks normal
 
-    document.querySelectorAll('.proj-card').forEach(c => c.classList.remove('expanded'));
-    card.classList.add('expanded');
     openProjectOverlay(card);
   });
 });
